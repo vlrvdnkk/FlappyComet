@@ -1,18 +1,39 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CometController : MonoBehaviour
 {
-    [SerializeField] private float _jumpForce = 2f;
-    [SerializeField] private float _gravityScale = 1f;
-    [SerializeField] private Rigidbody2D _rb;
+    public float jumpForce = 5f;     // Сила прыжка
+    private Rigidbody2D rb;          // Компонент Rigidbody2D для управления физикой
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    public void Jump()
+    {
+        // Применяем силу вверх для прыжка
+        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+    }
 
     public void GravityOn()
     {
-        _rb.gravityScale = _gravityScale;
+        rb.gravityScale = 1;
     }
 
-    public void Jumping()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        _rb.velocity = Vector2.up * _jumpForce;
+        // Проверяем столкновение с врагом или стенами (пол и потолок)
+        if (collision.gameObject)
+        {
+            RestartScene();  // Перезапуск сцены при столкновении с врагом или стенами
+        }
+    }
+
+    private void RestartScene()
+    {
+        // Перезапуск текущей сцены
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

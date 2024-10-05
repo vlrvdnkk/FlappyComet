@@ -8,7 +8,7 @@ public class InputListener : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0))
         {
-            _cometController.Jumping();
+            _cometController.Jump();
         }
     }
 }
